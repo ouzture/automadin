@@ -39,11 +39,12 @@ will work until you test your flow.
 Use **Tools > Runtime Components** to add or repair browser and Android runtimes.
 Use **Help > Diagnostics** when a component remains unavailable.
 
-## Updates and data
+## Protect your data
 
-Before a significant upgrade, create **File > Export Portable Backup**. The
-backup includes the database and any selected ready browser profiles. Treat the
-file as sensitive: profiles can contain cookies and sign-in tokens, and the
-bundle is integrity-checked but not encrypted.
+Create **File > Export Portable Backup** before moving an installation or making
+major changes to its runtime setup. The backup includes the database and any
+selected ready browser profiles. Treat the file as sensitive: profiles can
+contain cookies and sign-in tokens, and the bundle is integrity-checked but not
+encrypted.
 
 Next: [Create your first flow](first-flow.md).
