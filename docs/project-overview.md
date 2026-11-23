@@ -88,7 +88,10 @@ Commands may contain `children` and `else_children`. Error behavior, retries, va
 
 ## Persistence and data safety
 
-SQLite stores flows, run configurations, schedules, images, profiles, and related application state. Use `docs/database-schema.md` for schema work and preserve migration compatibility.
+SQLite stores flows, run configurations, schedules, images, profiles, and related
+application state. Use `docs/database-schema.md` for the current persistence and
+data-safety contract. After a public release, schema changes must preserve data
+created by the latest published release.
 
 Portable backups can include browser profiles, cookies, and sign-in tokens. They are integrity-checked but are not a secrets-management mechanism. Never commit databases, profiles, generated logs, or exported backups.
 

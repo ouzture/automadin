@@ -39,5 +39,4 @@ computer.
 
     The user guide describes the current release and uses synthetic example data.
     Architecture, persistence, and build documents are maintained separately for
-    contributors. Historical plans and superseded design discussions are not part
-    of this public documentation set.
+    contributors.

@@ -1,102 +1,70 @@
-# Database schema and migration contract
+# Database schema and data safety
 
-Automadin stores its schema version in SQLite's `PRAGMA user_version`.
+Automadin stores application state in SQLite. The current schema version is
+recorded in SQLite's `PRAGMA user_version`; the value in
+`automadin.services.database.CURRENT_SCHEMA_VERSION` is the source of truth.
 
-- Current schema version: **8**
-- Oldest supported version: **0**
-- Supported startup/import range: **0–8**
+## Current data model
 
-Version 0 represents databases created before Automadin introduced an explicit
-version contract. A compatible version-0 database must contain the original core
-tables: `flows`, `images`, `run_configs`, and `profiles`. The 0→1 migration runs in
-one SQLite transaction, preserves those records, adds the later tables and profile
-metadata columns, validates the complete version-1 shape, and only then records
-`user_version = 1`.
+The database contains these application-owned tables:
 
-The 1→2 migration gives every browser-profile record a canonical UUID in
-`profile_id` and records its previous name in `legacy_storage_name`. Saved run
-setups that identify exactly one legacy profile are rewritten to the versioned UUID
-device format. Ambiguous or malformed references are preserved for diagnosis
-instead of being guessed.
+| Table | Purpose |
+| --- | --- |
+| `flows` | Current flow definitions and stable flow identities |
+| `flow_versions` | Saved flow history |
+| `images` | Template images and their source-surface metadata |
+| `run_configs` | Reusable run setups |
+| `schedules` | Durable schedule definitions |
+| `run_history` | Bounded execution history |
+| `profiles` | Browser-profile records and identity status |
+| `managed_emulator_profiles` | Reusable managed Android emulator definitions |
+| `visual_rules` | Reusable visual-recognition rules |
+| `app_settings` | Application settings and state |
 
-Migration does not attach a UUID record to an existing same-name directory. That
-would risk connecting an imported database to an unrelated local browser account.
-Legacy storage must be adopted explicitly in Browser Profiles; after adoption,
-`profiles/<profile UUID>/profile.json` binds the directory to the database identity.
-Imported version-2 records whose UUID directories are absent are also shown as
-needing setup and can be repaired by importing a copy of the intended browser
-profile.
+`CURRENT_SCHEMA_TABLES` and `CURRENT_SCHEMA_COLUMNS` in
+`automadin/services/database.py` define the exact required shape. Startup validates
+that shape before normal database use. Stable UUIDs identify flows, browser
+profiles, and managed emulator profiles independently of their display names.
 
-The 2→3 migration adds `identity_checked_at` and a three-bit
-`identity_stale_mask` for browser-profile name, signed-in user, and email
-freshness. Existing identity labels are preserved, but begin as never checked.
-Explicit refresh applies verified values or verified absence field by field in
-one transaction; an unavailable or malformed browser file keeps the stored value
-and marks only that field stale.
+Browser profile folders are separate user data and are not stored in SQLite.
+Their `profile.json` files contain only the stable profile ID, browser engine,
+manifest format and version, and creation timestamp. Authentication data remains
+inside the browser profile directory.
 
-The 3→4 migration adds durable schedules and bounded run history with their
-required indexes and foreign-key relationships.
+## Import and restore safety
 
-The 4→5 migration gives every current flow and flow-version chain a canonical
-UUID. The UUID is stored both in its indexed database column and serialized flow
-data, and the two values must match. Existing flows are stamped as legacy value
-model version 0; no Inputs, Variables, Outputs, or subflow mappings are inferred.
-Flow history is indexed by UUID and save time rather than mutable flow name.
-History created before a same-name flow was recreated is retained under a
-separate orphan identity and is not shown as history of the replacement flow.
-Malformed JSON or inconsistent identities fail the migration transactionally.
+Automadin never modifies a database selected by the user in place. Database-only
+import follows this sequence:
 
-The 5→6 migration adds reusable managed Android emulator profiles with stable
-profile and target identities.
+1. Open the selected source read-only and inspect its integrity and schema.
+2. Copy it into a unique staging file beside the active database.
+3. Validate the staged database against the current application contract.
+4. Atomically promote the validated file to the pending-import path.
+5. Validate the pending copy again at startup before activation.
+6. Back up the active database before replacement. If post-swap validation fails,
+   restore it through a separately validated sibling file.
 
-The 6→7 migration records the source surface size and coordinate space for
-stored image templates so adaptive matching can distinguish browser, Android,
-and Windows captures.
+A rejected pending import is retained separately for diagnosis while the active
+database remains unchanged. If restore preparation fails, Automadin keeps the
+safety backup and reports its path instead of deleting the active file or hiding
+the recovery error.
 
-The 7→8 migration retires Click Moving Target. It recursively removes that
-action from current flow trees, nested branches, hook action bodies, and flow
-version history. A one-time application setting records affected flow names and
-counts for the startup notice. The migration validates every transformed flow
-inside the same transaction; malformed data rolls the complete upgrade back.
+Portable backups may also include selected browser profile folders. Because those
+folders can contain cookies and sign-in tokens, portable backups must be handled as
+sensitive files. Moving data to another computer can still require profile
+reconciliation and signing in again.
 
-Databases with a version newer than the running build are rejected before WAL mode
-or schema changes are attempted. Users must open those databases with the same or a
-newer Automadin release; downgrades are not supported.
+## Changing persisted data
 
-## Import safety
-
-The database selected by the user is always opened read-only. Import follows this
-sequence:
-
-1. Inspect integrity, identity tables, and schema version on the selected source.
-2. Create a SQLite backup in a unique staging file beside the active database.
-3. Migrate that staging file, never the selected source.
-4. Re-inspect the staged file and require the current schema version.
-5. Atomically promote it to the pending-import path.
-6. At next startup, validate/migrate the pending copy again before activation.
-7. Back up the previous active database. If post-swap validation fails, build and
-   validate a sibling restore file, then atomically replace the failed active copy.
-
-A failed migration is rolled back. A failed pending import is moved to a rejected
-database file for diagnosis, while the active database remains unchanged. If even
-the atomic restore preparation fails (for example, due to a full disk), Automadin
-keeps the safety backup and reports its exact path instead of deleting the current
-file or silently swallowing the recovery error.
-
-## Adding future migrations
-
-Each release that changes persisted structure must:
+After the first public release, a schema change must preserve data created by the
+latest published release. For each change:
 
 1. Increase `CURRENT_SCHEMA_VERSION` by one.
-2. Add the matching `DatabaseService._migrate_vN_to_vN+1` method.
-3. Keep the migration compatible with a single SQLite transaction; do not use APIs
-   that implicitly commit midway through the migration.
-4. Update the current table/column contract and add upgrade, rollback, import, and
-   future-version rejection tests.
+2. Add one transactional schema transition in `DatabaseService`.
+3. Avoid SQLite operations that implicitly commit midway through the transition.
+4. Update the current table and column contracts.
+5. Add tests for current-schema creation, transition success, rollback, import,
+   and rejection of databases newer than the running application.
 
-The migration contract covers the SQLite database only. Browser profile folders
-remain separate user data and are not included in database import/export.
-`profile.json` contains only the stable profile ID, browser engine, manifest format
-and version, and creation timestamp; authentication data remains in the browser
-profile directory. Moving a database to another PC therefore requires explicit
-profile reconciliation and may require signing in again.
+Do not use display names as durable foreign identities, infer links to local
+browser-profile folders, or partially activate unvalidated imported data.

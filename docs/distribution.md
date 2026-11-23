@@ -324,11 +324,6 @@ file-to-directory or directory-to-file transition between manifests is rejected
 before extraction with uninstall-first guidance; downgrades are also rejected
 before installation begins.
 
-The first upgrade from 0.2.0 is intentionally conservative because that release
-has no managed-file manifest: it updates current files but retains unknown stale
-files. Cleanup becomes authoritative between 0.2.1 and later manifest-bearing
-releases.
-
 `tools/smoke_windows_installer.py` compiles tiny test-mode installers with a unique
 non-production identity, installs v1, upgrades to v2, rejects a shape-changing
 upgrade and downgrade, and uninstalls. It proves obsolete managed-file cleanup,
@@ -366,9 +361,10 @@ Before publishing:
 10. Open **Help > Diagnostics**; verify its preview matches the clipboard exactly,
     fixed log metadata contains no log messages or local paths, raw logs remain a
     separate warned action, and the frozen build reports its real PySide6 version.
-11. On a disposable clean Windows VM, test first install, launch, upgrade from the
-    previous release, Runtime Manager, first-run Setup, uninstall, and intentional
-    user-data retention.
+11. On a disposable clean Windows VM, test first install, launch, Runtime Manager,
+    first-run Setup, uninstall, and intentional user-data retention. From the
+    second public release onward, also test an upgrade from the latest published
+    release.
 
 There is not yet a single “publishable” build switch. Before publication, run the
 build with both `-RequireInstaller` and `-RequireComplianceReady`, then apply and
@@ -379,9 +375,9 @@ verify the code-signing and clean-machine lifecycle gates documented below.
 - `Automadin.exe` and the installer are not code-signed; Windows publisher trust
   and tamper verification remain unresolved.
 - Synthetic installer install/upgrade/downgrade/uninstall behavior and an
-  empty-runner lifecycle for the exact production installer are automated. An
-  upgrade from the prior production artifact plus interactive first-run/runtime/
-  portability checks still need a clean disposable-VM walkthrough.
+  empty-runner lifecycle for the exact production installer are automated.
+  Interactive first-run, runtime, portability, and clean disposable-VM checks
+  still require a manual walkthrough.
 - Public hosting must retain the exact hash-pinned corresponding-source set beside
   every binary release; an upstream Qt link alone is intentionally rejected.
 - The CycloneDX document covers locked Python distributions while the separately
