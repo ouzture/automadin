@@ -1,0 +1,4793 @@
+[
+  {
+    "id": "section",
+    "label": "Section",
+    "description": "Add a visible heading or note without affecting execution",
+    "category": "ORGANIZATION",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "label": "Text"
+      }
+    ]
+  },
+  {
+    "id": "group",
+    "label": "Group",
+    "description": "Organize commands under a visible title and move them together",
+    "category": "ORGANIZATION",
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "collapseChildren": true,
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "capture": "boundary", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "label": "Title"
+      }
+    ]
+  },
+  {
+    "id": "user_checkpoint",
+    "label": "User Checkpoint",
+    "description": "Pause the flow until the user completes a manual step",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "message",
+        "type": "multiline",
+        "label": "Message",
+        "default": "Complete the required manual step, then continue the flow."
+      }
+    ]
+  },
+  {
+    "id": "send_notification",
+    "label": "Send Notification",
+    "description": "Send a message through a configured notification channel",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "channel",
+        "type": "enum",
+        "label": "Channel",
+        "options": [
+          "pushover",
+          "telegram"
+        ],
+        "option_labels": {
+          "pushover": "Pushover",
+          "telegram": "Telegram"
+        },
+        "default": "pushover"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "label": "Title",
+        "default": "Automadin"
+      },
+      {
+        "name": "message",
+        "type": "multiline",
+        "label": "Message",
+        "default": "The flow reached this notification step."
+      },
+      {
+        "name": "priority",
+        "type": "enum",
+        "label": "Priority",
+        "options": [
+          "normal",
+          "high",
+          "emergency"
+        ],
+        "option_labels": {
+          "normal": "Normal",
+          "high": "High",
+          "emergency": "Emergency (repeat until acknowledged)"
+        },
+        "default": "normal"
+      },
+      {
+        "name": "retry_seconds",
+        "type": "int",
+        "label": "Repeat Every (seconds)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "default": 60,
+        "min": 30,
+        "max": 10800
+      },
+      {
+        "name": "expire_seconds",
+        "type": "int",
+        "label": "Stop Repeating After (seconds)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "default": 1800,
+        "min": 30,
+        "max": 10800
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "click_position",
+    "label": "Click Position",
+    "description": "Click at coordinates using pixels or percent",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "coordinate_unit",
+        "type": "enum",
+        "label": "Coordinate Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels"
+      },
+      {
+        "name": "x",
+        "type": "double",
+        "label": "X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "type": "double",
+        "label": "Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ]
+      },
+      {
+        "name": "click",
+        "aliases": [
+          "clickType"
+        ],
+        "type": "enum",
+        "label": "Click Type",
+        "options": [
+          "single",
+          "double"
+        ],
+        "default": "single"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "click_image",
+    "label": "Click Image",
+    "description": "Click on matched template image",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Click Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "group": "Click"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "click",
+        "type": "enum",
+        "label": "Click Type",
+        "options": [
+          "single",
+          "double"
+        ],
+        "default": "single",
+        "group": "Click"
+      },
+      {
+        "name": "xmargin",
+        "aliases": [
+          "margin_x"
+        ],
+        "type": "int",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click"
+      },
+      {
+        "name": "ymargin",
+        "aliases": [
+          "margin_y"
+        ],
+        "type": "int",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click"
+      },
+      {
+        "name": "search_region_mode",
+        "type": "enum",
+        "label": "Search Region",
+        "options": ["full", "fixed", "image_anchor"],
+        "default": "full",
+        "group": "Search Region"
+      },
+      {
+        "name": "search_coordinate_unit",
+        "type": "enum",
+        "label": "Search Coordinates",
+        "options": ["pixels", "percent"],
+        "default": "pixels",
+        "group": "Search Region"
+      },
+      {
+        "name": "search_start_x",
+        "type": "double",
+        "label": "Search Start X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "search_start_y",
+        "type": "double",
+        "label": "Search Start Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "search_end_x",
+        "type": "double",
+        "label": "Search End X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "search_end_y",
+        "type": "double",
+        "label": "Search End Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "hold_duration_ms",
+        "type": "int",
+        "label": "Hold Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true,
+        "group": "Click"
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "type_text",
+    "label": "Type Text",
+    "description": "Type text string",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "label": "Text"
+      },
+      {
+        "name": "min_delay",
+        "aliases": [
+          "minDelay"
+        ],
+        "type": "int",
+        "label": "Min Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "max_delay",
+        "aliases": [
+          "maxDelay"
+        ],
+        "type": "int",
+        "label": "Max Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "delay_ms",
+        "type": "int",
+        "label": "Fixed Delay (ms)",
+        "description": "Legacy fixed character delay used when minimum and maximum are both zero.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "clear_text_field",
+    "label": "Clear Text Field",
+    "description": "Clear an input field",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "selector",
+        "type": "string",
+        "label": "Selector"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "swipe",
+    "label": "Swipe",
+    "description": "Swipe between two points using percent or pixels",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "coordinate_unit",
+        "type": "enum",
+        "label": "Coordinate Unit",
+        "options": [
+          "percent",
+          "pixels"
+        ],
+        "default": "percent"
+      },
+      {
+        "name": "start_x",
+        "aliases": [
+          "startXPercent"
+        ],
+        "type": "double",
+        "label": "Start X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ]
+      },
+      {
+        "name": "start_y",
+        "aliases": [
+          "startYPercent"
+        ],
+        "type": "double",
+        "label": "Start Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ]
+      },
+      {
+        "name": "end_x",
+        "aliases": [
+          "endXPercent"
+        ],
+        "type": "double",
+        "label": "End X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ]
+      },
+      {
+        "name": "end_y",
+        "aliases": [
+          "endYPercent"
+        ],
+        "type": "double",
+        "label": "End Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ]
+      },
+      {
+        "name": "duration_ms",
+        "aliases": [
+          "duration"
+        ],
+        "type": "int",
+        "label": "Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "press_keycode",
+    "label": "Press Keys",
+    "description": "Press Tab, Enter, arrows, or keyboard shortcuts in Browser and Android",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "keys",
+        "aliases": [
+          "keycode"
+        ],
+        "type": "key_list",
+        "label": "Keys"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Mode",
+        "options": [
+          "simultaneous",
+          "sequential"
+        ],
+        "default": "simultaneous"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "read_screen_text",
+    "label": "Read Screen Text",
+    "description": "Capture a fixed or image-anchored region and read text or a number",
+    "category": "DETECTION",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "region_mode",
+        "type": "enum",
+        "label": "Region Mode",
+        "options": ["fixed", "image_anchor"],
+        "option_labels": {
+          "fixed": "Fixed area",
+          "image_anchor": "Image-anchored area"
+        },
+        "default": "fixed"
+      },
+      {
+        "name": "coordinate_unit",
+        "type": "enum",
+        "label": "Coordinate Unit",
+        "options": ["pixels", "percent"],
+        "option_labels": {
+          "pixels": "Pixels",
+          "percent": "Percent"
+        },
+        "default": "pixels"
+      },
+      {
+        "name": "start_x",
+        "type": "double",
+        "label": "Start X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true
+      },
+      {
+        "name": "start_y",
+        "type": "double",
+        "label": "Start Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true
+      },
+      {
+        "name": "end_x",
+        "type": "double",
+        "label": "End X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true
+      },
+      {
+        "name": "end_y",
+        "type": "double",
+        "label": "End Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Anchor Images",
+        "optional": true,
+        "group": "Image Anchor"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Anchor Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.9,
+        "group": "Image Anchor"
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Anchor Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "default": false,
+        "group": "Image Anchor"
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Anchor Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.3,
+        "group": "Image Anchor"
+      },
+      {
+        "name": "anchor",
+        "type": "enum",
+        "label": "Anchor Point",
+        "options": ["top_left", "top_right", "bottom_left", "bottom_right", "center"],
+        "option_labels": {
+          "top_left": "Top left",
+          "top_right": "Top right",
+          "bottom_left": "Bottom left",
+          "bottom_right": "Bottom right",
+          "center": "Center"
+        },
+        "default": "top_left",
+        "group": "Image Anchor"
+      },
+      {
+        "name": "offset_x",
+        "type": "double",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "group": "Image Anchor"
+      },
+      {
+        "name": "offset_y",
+        "type": "double",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "group": "Image Anchor"
+      },
+      {
+        "name": "region_width",
+        "type": "double",
+        "label": "Region Width",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "group": "Image Anchor"
+      },
+      {
+        "name": "region_height",
+        "type": "double",
+        "label": "Region Height",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "group": "Image Anchor"
+      },
+      {
+        "name": "result_type",
+        "type": "enum",
+        "label": "Result Type"
+      },
+      {
+        "name": "recognition_mode",
+        "type": "enum",
+        "label": "Recognition Mode",
+        "description": "Single value treats the crop as one line and limits recognized characters for typed numeric and duration results."
+      },
+      {
+        "name": "value_match_mode",
+        "type": "enum",
+        "label": "Parsing Mode",
+        "description": "First matching value extracts the first valid typed value and ignores surrounding OCR noise."
+      },
+      {
+        "name": "decimal_separator",
+        "type": "enum",
+        "label": "Decimal Separator"
+      },
+      {
+        "name": "duration_format",
+        "type": "enum",
+        "label": "Clock Format",
+        "description": "Choose how colon-separated OCR text such as 3:15 should be interpreted."
+      },
+      {
+        "name": "preprocessing",
+        "type": "enum",
+        "label": "Preprocessing",
+        "description": "Transform the crop before OCR. Bright color text works well for small colored pixel fonts."
+      },
+      {
+        "name": "allow_empty",
+        "type": "bool",
+        "label": "Allow Empty Text",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "optional": true,
+        "default": false
+      },
+      {
+        "name": "variable",
+        "type": "string",
+        "valueRole": "output_target",
+        "label": "Result Variable"
+      },
+      {
+        "name": "log_values",
+        "type": "bool",
+        "label": "Include Values in Log",
+        "description": "Show raw OCR and parsed values in execution logs. Leave off for private data.",
+        "default": false
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "screenshot",
+    "label": "Screenshot",
+    "description": "Capture device screenshot",
+    "category": "DETECTION",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "save_to_disk",
+        "type": "bool",
+        "label": "Save to Disk",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "save_path",
+        "type": "string",
+        "label": "Save Directory",
+        "supportsValueTemplate": false,
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "find_image",
+    "label": "Find Image",
+    "description": "Find template image on screen",
+    "category": "DETECTION",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "search_region_mode",
+        "type": "enum",
+        "label": "Search Region",
+        "options": ["full", "fixed", "image_anchor"],
+        "default": "full",
+        "group": "Search Region"
+      },
+      {
+        "name": "search_coordinate_unit",
+        "type": "enum",
+        "label": "Search Coordinates",
+        "options": ["pixels", "percent"],
+        "default": "pixels",
+        "group": "Search Region"
+      },
+      {
+        "name": "search_start_x",
+        "type": "double",
+        "label": "Search Start X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "search_start_y",
+        "type": "double",
+        "label": "Search Start Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "search_end_x",
+        "type": "double",
+        "label": "Search End X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "search_end_y",
+        "type": "double",
+        "label": "Search End Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true,
+        "group": "Search Region"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "for",
+    "label": "For",
+    "description": "Repeat commands N times",
+    "category": "CONTROL_FLOW",
+    "childBuiltins": ["index"],
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "count",
+        "type": "int",
+        "label": "Count",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "default": 3,
+        "min": 0
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "while",
+    "label": "While",
+    "description": "Repeat while image is/isn't found",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "childBuiltins": ["_match_x", "_match_y"],
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "condition",
+        "type": "enum",
+        "label": "Condition",
+        "options": [
+          "found",
+          "not_found"
+        ],
+        "option_labels": {
+          "found": "Image is found",
+          "not_found": "Image is not found"
+        },
+        "default": "found"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "if_image",
+    "label": "If Image",
+    "description": "Conditional branch based on image detection with optional pixel or percent offset",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": true,
+    "canHaveElse": true,
+    "childBuiltins": ["_match_x", "_match_y"],
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Click Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "condition",
+        "type": "enum",
+        "label": "Condition",
+        "options": [
+          "found",
+          "not_found"
+        ],
+        "option_labels": {
+          "found": "Image is found",
+          "not_found": "Image is not found"
+        },
+        "default": "found"
+      },
+      {
+        "name": "clickIfFound",
+        "type": "bool",
+        "label": "Click If Found",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "hold_duration_ms",
+        "type": "int",
+        "label": "Hold Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "xmargin",
+        "aliases": [
+          "margin_x"
+        ],
+        "type": "int",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click If Found"
+      },
+      {
+        "name": "ymargin",
+        "aliases": [
+          "margin_y"
+        ],
+        "type": "int",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click If Found"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "click_best_target",
+    "label": "Click Best Target",
+    "description": "Detect visual target blobs and click the best candidate using optional bonus/path scoring",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "target_rule",
+        "type": "visual_rule",
+        "label": "Target Rule"
+      },
+      {
+        "name": "bonus_rule",
+        "type": "visual_rule",
+        "label": "Bonus Rule",
+        "optional": true
+      },
+      {
+        "name": "source_mode",
+        "type": "enum",
+        "label": "Path Source",
+        "description": "Start point for bonus-path scoring. Last clicked target is useful when each click moves from the previous target.",
+        "options": [
+          "last_clicked_target",
+          "screen_center",
+          "fixed_position"
+        ],
+        "option_labels": {
+          "last_clicked_target": "Last clicked target",
+          "screen_center": "Screen center",
+          "fixed_position": "Fixed position"
+        },
+        "default": "last_clicked_target"
+      },
+      {
+        "name": "source_fallback",
+        "type": "enum",
+        "label": "Source If No Previous Target",
+        "description": "Used only when Path Source is last_clicked_target but this flow has not clicked a target yet.",
+        "options": [
+          "screen_center",
+          "fixed_position"
+        ],
+        "option_labels": {
+          "screen_center": "Screen center",
+          "fixed_position": "Fixed position"
+        },
+        "default": "screen_center",
+        "optional": true
+      },
+      {
+        "name": "source_x",
+        "type": "double",
+        "label": "Source X",
+        "description": "Used only when Path Source, or its no-previous-target fallback, is fixed_position.",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true
+      },
+      {
+        "name": "source_y",
+        "type": "double",
+        "label": "Source Y",
+        "description": "Used only when Path Source, or its no-previous-target fallback, is fixed_position.",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "optional": true
+      },
+      {
+        "name": "scoring_mode",
+        "type": "enum",
+        "label": "Scoring",
+        "options": [
+          "closest_to_bonus_path",
+          "nearest",
+          "largest",
+          "random"
+        ],
+        "option_labels": {
+          "closest_to_bonus_path": "Bonus along path",
+          "nearest": "Nearest to source",
+          "largest": "Largest",
+          "random": "Random"
+        },
+        "default": "closest_to_bonus_path"
+      },
+      {
+        "name": "fallback_mode",
+        "type": "enum",
+        "label": "If No Bonus Path",
+        "description": "What to do when bonus scoring cannot find a bonus near any target path. None means do not click.",
+        "options": [
+          "none",
+          "nearest",
+          "largest",
+          "random"
+        ],
+        "option_labels": {
+          "none": "Don't click",
+          "nearest": "Nearest to source",
+          "largest": "Largest",
+          "random": "Random"
+        },
+        "default": "none"
+      },
+      {
+        "name": "path_tolerance_px",
+        "type": "double",
+        "label": "Bonus Path Tolerance (px)",
+        "description": "Command scoring setting: bonus must be within this many pixels of the line from source to target.",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 30.0
+      },
+      {
+        "name": "preview_only",
+        "type": "bool",
+        "label": "Preview Only",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "default": false
+      },
+      {
+        "name": "log_timing",
+        "type": "bool",
+        "label": "Log Timing",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "default": false
+      },
+      {
+        "name": "click",
+        "type": "enum",
+        "label": "Click Type",
+        "options": [
+          "single",
+          "double"
+        ],
+        "default": "single",
+        "group": "Click"
+      },
+      {
+        "name": "hold_duration_ms",
+        "type": "int",
+        "label": "Hold Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true,
+        "group": "Click"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "click_dynamic_target",
+    "label": "Click Dynamic Target",
+    "description": "Detect and click a target that moves or changes appearance",
+    "category": "ACTIONS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "target_source",
+        "type": "enum",
+        "label": "Target Source",
+        "options": ["images", "visual_rule"],
+        "option_labels": {
+          "images": "Recorded poses or images",
+          "visual_rule": "Colour / shape rule"
+        },
+        "default": "images"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Learned Poses",
+        "optional": true,
+        "record_dynamic_target": true
+      },
+      {
+        "name": "target_rule",
+        "type": "visual_rule",
+        "label": "Visual Rule",
+        "optional": true
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Sensitivity",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.78,
+        "min": 0.0,
+        "max": 1.0
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Require Similar Colours",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "default": false
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Colour Flexibility",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.3,
+        "min": 0.0,
+        "max": 1.0
+      },
+      {
+        "name": "strategy",
+        "type": "enum",
+        "label": "When Found",
+        "options": ["latest", "intercept", "predict"],
+        "option_labels": {
+          "latest": "Click where it is",
+          "intercept": "Click when it enters an area",
+          "predict": "Click ahead of it"
+        },
+        "default": "latest"
+      },
+      {
+        "name": "target_anchor",
+        "type": "enum",
+        "label": "Click Point",
+        "options": ["top_left", "top", "top_right", "left", "center", "right", "bottom_left", "bottom", "bottom_right"],
+        "option_labels": {
+          "top_left": "Top left",
+          "top": "Top",
+          "top_right": "Top right",
+          "left": "Left",
+          "center": "Centre",
+          "right": "Right",
+          "bottom_left": "Bottom left",
+          "bottom": "Bottom",
+          "bottom_right": "Bottom right"
+        },
+        "default": "center"
+      },
+      {
+        "name": "offset_x_percent",
+        "type": "double",
+        "label": "Horizontal Offset (%)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.0,
+        "min": -100.0,
+        "max": 100.0
+      },
+      {
+        "name": "offset_y_percent",
+        "type": "double",
+        "label": "Vertical Offset (%)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.0,
+        "min": -100.0,
+        "max": 100.0
+      },
+      {
+        "name": "trigger_coordinate_unit",
+        "type": "enum",
+        "label": "Trigger Area Coordinates",
+        "options": ["pixels", "percent"],
+        "option_labels": {"pixels": "Pixels", "percent": "Percent"},
+        "default": "percent"
+      },
+      {
+        "name": "trigger_start_x",
+        "type": "double",
+        "label": "Trigger Start X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 40.0
+      },
+      {
+        "name": "trigger_start_y",
+        "type": "double",
+        "label": "Trigger Start Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 40.0
+      },
+      {
+        "name": "trigger_end_x",
+        "type": "double",
+        "label": "Trigger End X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 60.0
+      },
+      {
+        "name": "trigger_end_y",
+        "type": "double",
+        "label": "Trigger End Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 60.0
+      },
+      {
+        "name": "intercept_click",
+        "type": "enum",
+        "label": "On Entry",
+        "options": ["target", "fixed"],
+        "option_labels": {"target": "Click target", "fixed": "Click fixed point"},
+        "default": "target"
+      },
+      {
+        "name": "fixed_click_x",
+        "type": "double",
+        "label": "Fixed Click X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.0
+      },
+      {
+        "name": "fixed_click_y",
+        "type": "double",
+        "label": "Fixed Click Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0.0
+      },
+      {
+        "name": "timeout_ms",
+        "type": "int",
+        "label": "Wait Up To (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "default": 5000,
+        "min": 100
+      },
+      {
+        "name": "frame_interval_ms",
+        "type": "int",
+        "label": "Check Every (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "default": 100,
+        "min": 20
+      },
+      {
+        "name": "confirmation_frames",
+        "type": "int",
+        "label": "Confirm For (frames)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"],
+        "default": 2,
+        "min": 1,
+        "max": 10
+      },
+      {
+        "name": "missed_frame_tolerance",
+        "type": "int",
+        "label": "Allowed Misses",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"],
+        "default": 1,
+        "min": 0,
+        "max": 10
+      },
+      {
+        "name": "max_movement_px",
+        "type": "double",
+        "label": "Maximum Movement Per Frame (px)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 250.0,
+        "min": 1.0
+      },
+      {
+        "name": "observation_count",
+        "type": "int",
+        "label": "Prediction Observations",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"],
+        "default": 3,
+        "min": 2,
+        "max": 10
+      },
+      {
+        "name": "lead_time_ms",
+        "type": "double",
+        "label": "Prediction Lead (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "default": 150.0,
+        "min": 0.0
+      },
+      {
+        "name": "minimum_speed_px_s",
+        "type": "double",
+        "label": "Minimum Predictable Speed (px/s)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 20.0,
+        "min": 0.0
+      },
+      {
+        "name": "maximum_residual_px",
+        "type": "double",
+        "label": "Maximum Path Noise (px)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 18.0,
+        "min": 0.0
+      },
+      {
+        "name": "max_prediction_distance_px",
+        "type": "double",
+        "label": "Maximum Prediction Distance (px)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 200.0,
+        "min": 0.0
+      },
+      {
+        "name": "prediction_fallback",
+        "type": "enum",
+        "label": "When Prediction Is Uncertain",
+        "options": ["no_click", "latest"],
+        "option_labels": {"no_click": "Do not click", "latest": "Click latest position"},
+        "default": "no_click"
+      },
+      {
+        "name": "preview_only",
+        "type": "bool",
+        "label": "Preview Without Clicking",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "default": false
+      },
+      {
+        "name": "click",
+        "type": "enum",
+        "label": "Click Type",
+        "options": ["single", "double"],
+        "option_labels": {"single": "Single", "double": "Double"},
+        "default": "single"
+      },
+      {
+        "name": "hold_duration_ms",
+        "type": "int",
+        "label": "Hold Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Minimum Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "if_value",
+    "label": "If Value",
+    "description": "Branch on a typed Input, Variable, or Built-in comparison",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": true,
+    "canHaveElse": true,
+    "params": [
+      {
+        "name": "left",
+        "type": "value_reference",
+        "label": "Left Value"
+      },
+      {
+        "name": "operator",
+        "type": "enum",
+        "label": "Comparison",
+        "options": ["equals", "not_equals", "greater_than", "greater_or_equal", "less_than", "less_or_equal", "contains", "not_contains", "starts_with", "not_starts_with", "ends_with", "not_ends_with", "is_empty", "is_not_empty"],
+        "option_labels": {
+          "equals": "Equals",
+          "not_equals": "Does not equal",
+          "greater_than": "Is greater than",
+          "greater_or_equal": "Is greater than or equal to",
+          "less_than": "Is less than",
+          "less_or_equal": "Is less than or equal to",
+          "contains": "Contains",
+          "not_contains": "Does not contain",
+          "starts_with": "Starts with",
+          "not_starts_with": "Does not start with",
+          "ends_with": "Ends with",
+          "not_ends_with": "Does not end with",
+          "is_empty": "Is empty",
+          "is_not_empty": "Is not empty"
+        },
+        "default": "equals"
+      },
+      {
+        "name": "right",
+        "type": "value_reference",
+        "label": "Right Value"
+      },
+      {
+        "name": "ignore_case",
+        "type": "bool",
+        "label": "Ignore Case (text only)",
+        "description": "Text comparisons are case-sensitive by default.",
+        "default": false,
+        "group": "Text"
+      },
+      {
+        "name": "log_values",
+        "type": "bool",
+        "label": "Include Values in Log",
+        "description": "Show resolved comparison values in execution logs. Leave off for private data.",
+        "default": false
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "while_value",
+    "label": "While Value",
+    "description": "Repeat while a typed Input, Variable, or Built-in comparison remains true",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "left",
+        "type": "value_reference",
+        "label": "Left Value"
+      },
+      {
+        "name": "operator",
+        "type": "enum",
+        "label": "Comparison",
+        "options": ["equals", "not_equals", "greater_than", "greater_or_equal", "less_than", "less_or_equal", "contains", "not_contains", "starts_with", "not_starts_with", "ends_with", "not_ends_with", "is_empty", "is_not_empty"],
+        "option_labels": {
+          "equals": "Equals",
+          "not_equals": "Does not equal",
+          "greater_than": "Is greater than",
+          "greater_or_equal": "Is greater than or equal to",
+          "less_than": "Is less than",
+          "less_or_equal": "Is less than or equal to",
+          "contains": "Contains",
+          "not_contains": "Does not contain",
+          "starts_with": "Starts with",
+          "not_starts_with": "Does not start with",
+          "ends_with": "Ends with",
+          "not_ends_with": "Does not end with",
+          "is_empty": "Is empty",
+          "is_not_empty": "Is not empty"
+        },
+        "default": "equals"
+      },
+      {
+        "name": "right",
+        "type": "value_reference",
+        "label": "Right Value"
+      },
+      {
+        "name": "ignore_case",
+        "type": "bool",
+        "label": "Ignore Case (text only)",
+        "description": "Text comparisons are case-sensitive by default.",
+        "default": false,
+        "group": "Text"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Maximum Loop Time (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "switch_value",
+    "label": "Switch Value",
+    "description": "Run the first matching typed Case, or Default when none match",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "collapseChildren": true,
+    "params": [
+      {
+        "name": "source",
+        "type": "value_reference",
+        "label": "Source Value"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "switch_case",
+    "label": "Case",
+    "description": "A typed comparison branch owned by Switch Value",
+    "category": "CONTROL_FLOW",
+    "paletteHidden": true,
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "operator",
+        "type": "enum",
+        "label": "Comparison",
+        "options": ["equals", "not_equals", "greater_than", "greater_or_equal", "less_than", "less_or_equal", "contains", "not_contains", "starts_with", "not_starts_with", "ends_with", "not_ends_with", "is_empty", "is_not_empty"],
+        "option_labels": {
+          "equals": "Equals",
+          "not_equals": "Does not equal",
+          "greater_than": "Is greater than",
+          "greater_or_equal": "Is greater than or equal to",
+          "less_than": "Is less than",
+          "less_or_equal": "Is less than or equal to",
+          "contains": "Contains",
+          "not_contains": "Does not contain",
+          "starts_with": "Starts with",
+          "not_starts_with": "Does not start with",
+          "ends_with": "Ends with",
+          "not_ends_with": "Does not end with",
+          "is_empty": "Is empty",
+          "is_not_empty": "Is not empty"
+        },
+        "default": "equals"
+      },
+      {
+        "name": "right",
+        "type": "value_reference",
+        "label": "Comparison Value"
+      },
+      {
+        "name": "ignore_case",
+        "type": "bool",
+        "label": "Ignore Case (text only)",
+        "description": "Text comparisons are case-sensitive by default.",
+        "default": false,
+        "group": "Text"
+      }
+    ]
+  },
+  {
+    "id": "switch_default",
+    "label": "Default",
+    "description": "The final branch used when no Switch Case matches",
+    "category": "CONTROL_FLOW",
+    "paletteHidden": true,
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "params": []
+  },
+  {
+    "id": "if_elapsed",
+    "label": "If Time Elapsed",
+    "description": "Run child commands only after Min Wait has elapsed since this block was last entered; the else block runs when it has not elapsed.",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": true,
+    "canHaveElse": true,
+    "params": [
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 0,
+        "min": 0
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "for_each",
+    "label": "For Each",
+    "description": "Iterate list with {{item}} and {{index}}",
+    "category": "CONTROL_FLOW",
+    "childBuiltins": ["item", "index"],
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "values",
+        "type": "string_list",
+        "label": "Values",
+        "aliases": ["items"]
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "for_each_browser_element",
+    "label": "For Each Browser Element",
+    "description": "Snapshot and iterate browser elements inside an optional container",
+    "category": "CONTROL_FLOW",
+    "childBuiltins": ["element_index", "element_count"],
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "locator",
+        "type": "locator",
+        "label": "Element Collection Locator"
+      },
+      {
+        "name": "container_locator",
+        "type": "locator",
+        "label": "Container Locator (optional)",
+        "optional": true,
+        "allow_empty": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "run_flow",
+    "label": "Run Flow",
+    "description": "Run another saved flow as subroutine",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "flow_name",
+        "type": "flow_reference",
+        "label": "Flow"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "update_variable",
+    "label": "Update Variable",
+    "description": "Change a declared typed Variable",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "target_variable_id",
+        "type": "variable_target",
+        "label": "Target Variable"
+      },
+      {
+        "name": "operation",
+        "type": "enum",
+        "label": "Operation",
+        "options": ["set", "add", "subtract", "multiply", "divide", "append", "prepend", "replace", "toggle", "reset"],
+        "default": "set"
+      },
+      {
+        "name": "source",
+        "type": "value_reference",
+        "label": "Source",
+        "optional": true
+      },
+      {
+        "name": "find",
+        "type": "value_reference",
+        "label": "Find",
+        "optional": true
+      },
+      {
+        "name": "replacement",
+        "type": "value_reference",
+        "label": "Replacement",
+        "optional": true
+      },
+      {
+        "name": "log_values",
+        "type": "bool",
+        "label": "Include Values in Log",
+        "description": "Show the assigned Variable value in execution logs. Leave off for private data.",
+        "default": false
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "terminate_flow",
+    "label": "Terminate Flow",
+    "description": "End the current flow run immediately",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": []
+  },
+  {
+    "id": "restart_flow",
+    "label": "Restart Flow",
+    "description": "Restart the current flow from the first command",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": []
+  },
+  {
+    "id": "wait",
+    "label": "Wait",
+    "description": "Wait for fixed duration",
+    "category": "TIMING",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "ms",
+        "type": "int",
+        "label": "Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 500
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "random_wait",
+    "label": "Random Wait",
+    "description": "Wait for random duration in range",
+    "category": "TIMING",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "min_ms",
+        "aliases": [
+          "minMs"
+        ],
+        "type": "int",
+        "label": "Min (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 500
+      },
+      {
+        "name": "max_ms",
+        "aliases": [
+          "maxMs"
+        ],
+        "type": "int",
+        "label": "Max (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 2000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "navigate_to",
+    "label": "Navigate To",
+    "description": "Navigate to URL",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "url",
+        "type": "string",
+        "label": "URL"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "description": "Total time allowed for navigation commit and DOM readiness",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "go_back",
+    "label": "Go Back",
+    "description": "Go back in browser history",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "description": "Total time allowed for navigation commit and DOM readiness",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "go_forward",
+    "label": "Go Forward",
+    "description": "Go forward in browser history",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "description": "Total time allowed for navigation commit and DOM readiness",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "reload_page",
+    "label": "Reload Page",
+    "description": "Reload current page",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "description": "Total time allowed for navigation commit and DOM readiness",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "open_new_tab",
+    "label": "Open New Tab",
+    "description": "Open a new browser tab",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "url",
+        "type": "string",
+        "label": "URL (optional)",
+        "optional": true
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "description": "Total time allowed for navigation commit and DOM readiness",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "close_tab",
+    "label": "Close Tab",
+    "description": "Close current tab",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "close_all_tabs",
+    "label": "Close All Tabs",
+    "description": "Close all tabs and open fresh one",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "switch_tab",
+    "label": "Switch Tab",
+    "description": "Switch by saved Automadin tab position; site popups are excluded",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "index",
+        "type": "int",
+        "label": "Automadin Tab Position (0 = first)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "default": 0,
+        "min": 0
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "select_browser_page",
+    "label": "Select Browser Page",
+    "description": "Select a live tab using a durable URL, title, recency, or opener rule",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "strategy",
+        "type": "enum",
+        "label": "Selection Rule",
+        "options": [
+          "newest",
+          "newest_popup",
+          "newest_child",
+          "opener",
+          "url_exact",
+          "url_contains",
+          "title_exact",
+          "title_contains"
+        ],
+        "default": "newest"
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "label": "URL or Title Value",
+        "description": "Required only for URL and title rules",
+        "optional": true
+      },
+      {
+        "name": "match_case",
+        "type": "bool",
+        "label": "Case-sensitive Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "default": false
+      }
+    ]
+  },
+  {
+    "id": "ensure_browser_page",
+    "label": "Ensure Browser Page",
+    "description": "Keep the active page or create a replacement if every page was closed",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "url",
+        "type": "string",
+        "label": "Replacement URL (optional)",
+        "description": "Used only when a replacement page must be created",
+        "optional": true
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "description": "Total time allowed when opening and loading a replacement page",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      }
+    ]
+  },
+  {
+    "id": "click_element",
+    "label": "Click Element",
+    "description": "Click a browser element using a resilient locator",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "browser_element", "evidence": "browser_dom", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "locator",
+        "type": "locator",
+        "label": "Element Locator",
+        "optional": true,
+        "allow_empty": true
+      },
+      {
+        "name": "target",
+        "type": "enum",
+        "label": "Target",
+        "options": ["locator", "current_element"],
+        "default": "locator"
+      },
+      {
+        "name": "click_anchor",
+        "type": "enum",
+        "label": "Click Position",
+        "options": [
+          "center",
+          "top_left",
+          "top_right",
+          "bottom_left",
+          "bottom_right"
+        ],
+        "default": "center"
+      },
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Offset Unit",
+        "options": ["pixels", "percent"],
+        "default": "pixels"
+      },
+      {
+        "name": "offset_x",
+        "type": "double",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0
+      },
+      {
+        "name": "offset_y",
+        "type": "double",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["number"],
+        "default": 0
+      },
+      {
+        "name": "require_new_child_tab",
+        "type": "bool",
+        "label": "Require and Activate New Child Tab",
+        "supportsValueReference": true,
+        "allowed_value_types": ["boolean"],
+        "default": false
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 5000,
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "scroll_browser",
+    "label": "Scroll Browser",
+    "description": "Scroll the browser page or bring an element into view",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "target",
+        "type": "enum",
+        "label": "Target",
+        "options": ["page", "locator", "current_element"],
+        "default": "page"
+      },
+      {
+        "name": "locator",
+        "type": "locator",
+        "label": "Element Locator",
+        "optional": true,
+        "allow_empty": true
+      },
+      {
+        "name": "delta_x",
+        "type": "int",
+        "label": "Horizontal Pixels",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"],
+        "default": 0
+      },
+      {
+        "name": "delta_y",
+        "type": "int",
+        "label": "Vertical Pixels",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"],
+        "default": 600
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "default": 5000,
+        "min": 1
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": ["duration_ms"],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "wait_for_selector",
+    "label": "Wait For Element",
+    "description": "Wait for a browser element using a resilient locator",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "browser_element", "evidence": "browser_dom", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "locator",
+        "aliases": [
+          "selector"
+        ],
+        "type": "locator",
+        "label": "Element Locator"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 5000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "wait_for_navigation",
+    "label": "Wait For Navigation",
+    "description": "Wait for page to load",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "input_fill",
+    "label": "Input Fill",
+    "description": "Fill a browser field using a resilient locator",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "browser_element", "evidence": "browser_dom", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "locator",
+        "aliases": [
+          "selector"
+        ],
+        "type": "locator",
+        "label": "Element Locator"
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "label": "Value",
+        "allow_empty": true
+      },
+      {
+        "name": "min_delay",
+        "aliases": [
+          "minDelay"
+        ],
+        "type": "int",
+        "label": "Min Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "max_delay",
+        "aliases": [
+          "maxDelay"
+        ],
+        "type": "int",
+        "label": "Max Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "delay_ms",
+        "type": "int",
+        "label": "Char Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "extract_text",
+    "label": "Extract Text",
+    "description": "Extract located browser element text into a variable",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "browser_element", "evidence": "browser_dom", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "locator",
+        "aliases": [
+          "selector"
+        ],
+        "type": "locator",
+        "label": "Element Locator",
+        "optional": true,
+        "allow_empty": true
+      },
+      {
+        "name": "target",
+        "type": "enum",
+        "label": "Target",
+        "options": ["locator", "current_element"],
+        "default": "locator"
+      },
+      {
+        "name": "child_selector",
+        "type": "string",
+        "label": "Child CSS Selector (optional)",
+        "description": "When Target is Current Element, extract text from this descendant instead",
+        "optional": true,
+        "allow_empty": true
+      },
+      {
+        "name": "variable",
+        "type": "string",
+        "valueRole": "output_target",
+        "allowed_value_types": [
+          "text"
+        ],
+        "label": "Variable Name",
+        "default": "result"
+      },
+      {
+        "name": "log_values",
+        "type": "bool",
+        "label": "Include Values in Log",
+        "description": "Show extracted text in execution logs. Leave off for private data.",
+        "default": false
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "evaluate_js",
+    "label": "Evaluate JS",
+    "description": "Execute JavaScript in page",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "script",
+        "type": "multiline",
+        "label": "JavaScript",
+        "allowsLiteralBraces": true
+      },
+      {
+        "name": "variable",
+        "type": "string",
+        "valueRole": "output_target",
+        "allowed_value_types": [
+          "text"
+        ],
+        "label": "Result Variable",
+        "optional": true
+      },
+      {
+        "name": "log_values",
+        "type": "bool",
+        "label": "Include Values in Log",
+        "description": "Show the JavaScript result in execution logs. Leave off for private data.",
+        "default": false
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "assert_visible",
+    "label": "Assert Visible",
+    "description": "Assert a browser element is visible using a resilient locator",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "browser_element", "evidence": "browser_dom", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "locator",
+        "aliases": [
+          "selector"
+        ],
+        "type": "locator",
+        "label": "Element Locator"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "assert_url_contains",
+    "label": "Assert URL Contains",
+    "description": "Assert URL contains text",
+    "category": "BROWSER",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "label": "Text"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "android_install_apk",
+    "label": "Install Android APK",
+    "description": "Install a local APK on the connected Android device",
+    "category": "ANDROID",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "apk_path",
+        "type": "string",
+        "label": "APK File Path"
+      },
+      {
+        "name": "replace_existing",
+        "type": "bool",
+        "label": "Replace Existing App",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "default": true
+      },
+      {
+        "name": "grant_permissions",
+        "type": "bool",
+        "label": "Grant Runtime Permissions",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "default": false
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 120000,
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "android_launch_app",
+    "label": "Launch Android App",
+    "description": "Ensure an Android package is open and in the foreground",
+    "category": "ANDROID",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "package_name",
+        "type": "string",
+        "label": "Package Name",
+        "picker": "android_package"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Foreground Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 15000,
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "android_force_stop_app",
+    "label": "Force-Stop Android App",
+    "description": "Stop an Android package without clearing its data",
+    "category": "ANDROID",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "package_name",
+        "type": "string",
+        "label": "Package Name",
+        "picker": "android_package"
+      }
+    ]
+  },
+  {
+    "id": "android_restart_app",
+    "label": "Restart Android App",
+    "description": "Force-stop, launch, and verify an Android package",
+    "category": "ANDROID",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "package_name",
+        "type": "string",
+        "label": "Package Name",
+        "picker": "android_package"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Foreground Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 15000,
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "android_start_activity",
+    "label": "Start Android Activity",
+    "description": "Open a specific activity in an installed Android package",
+    "category": "ANDROID",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "package_name",
+        "type": "string",
+        "label": "Package Name",
+        "picker": "android_package"
+      },
+      {
+        "name": "activity_name",
+        "type": "string",
+        "label": "Activity Class",
+        "description": "For example .MainActivity or com.example.MainActivity"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Foreground Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 15000,
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "android_open_deep_link",
+    "label": "Open Android Deep Link",
+    "description": "Open a URI with Android's VIEW intent",
+    "category": "ANDROID",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "uri",
+        "type": "string",
+        "label": "Deep Link URI",
+        "description": "An https:// or app-specific URI"
+      },
+      {
+        "name": "package_name",
+        "type": "string",
+        "label": "Package Name (optional)",
+        "picker": "android_package",
+        "optional": true
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Launch Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 15000,
+        "min": 1
+      }
+    ]
+  },
+  {
+    "id": "win_ensure_app",
+    "label": "Ensure Windows App",
+    "description": "Reacquire the configured window or launch the application when closed",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "executable_path",
+        "type": "string",
+        "label": "Executable Path (optional)",
+        "description": "Leave empty to use the executable saved with the selected Windows target",
+        "optional": true
+      },
+      {
+        "name": "arguments",
+        "type": "string_list",
+        "label": "Launch Arguments",
+        "default": [],
+        "optional": true
+      },
+      {
+        "name": "window_title",
+        "type": "string",
+        "label": "Window Title (optional)",
+        "description": "Used to distinguish multiple windows from the same executable",
+        "optional": true
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Open Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000,
+        "min": 1
+      },
+      {
+        "name": "focus",
+        "type": "bool",
+        "label": "Restore and Focus",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "default": true
+      }
+    ]
+  },
+  {
+    "id": "win_click",
+    "label": "Win Click",
+    "description": "Click in window using pixels or percent",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "coordinate_unit",
+        "type": "enum",
+        "label": "Coordinate Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels"
+      },
+      {
+        "name": "x",
+        "type": "int",
+        "label": "X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ]
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "label": "Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ]
+      },
+      {
+        "name": "button",
+        "type": "enum",
+        "label": "Button",
+        "options": [
+          "left",
+          "right",
+          "middle"
+        ],
+        "default": "left"
+      },
+      {
+        "name": "click",
+        "type": "enum",
+        "label": "Click Type",
+        "options": [
+          "single",
+          "double"
+        ],
+        "default": "single"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Input Mode",
+        "description": "message works in the background without moving your mouse. cursor and input are physical compatibility fallbacks that briefly focus the target, then restore your previous window and cursor.",
+        "options": [
+          "message",
+          "cursor",
+          "input"
+        ],
+        "default": "message"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Activation Wait (ms)",
+        "description": "Wait after bringing an unfocused game to the foreground before pressing the mouse button.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true
+      },
+      {
+        "name": "click_duration_ms",
+        "type": "int",
+        "label": "Click Duration (ms)",
+        "description": "How long physical modes keep the mouse button down so games polling each frame can detect it.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 50,
+        "optional": true
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after releasing the button before restoring your previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_drag",
+    "label": "Win Drag",
+    "description": "Drag in a window from a position to that position plus a pixel or percent offset",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "coordinate_unit",
+        "type": "enum",
+        "label": "Coordinate Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "group": "Start"
+      },
+      {
+        "name": "x",
+        "type": "int",
+        "label": "Start X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "group": "Start"
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "label": "Start Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "group": "Start"
+      },
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Drag Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "group": "Drag"
+      },
+      {
+        "name": "xoffset",
+        "aliases": [
+          "offset_x",
+          "drag_x",
+          "drag_offset_x"
+        ],
+        "type": "int",
+        "label": "Drag Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Drag"
+      },
+      {
+        "name": "yoffset",
+        "aliases": [
+          "offset_y",
+          "drag_y",
+          "drag_offset_y"
+        ],
+        "type": "int",
+        "label": "Drag Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Drag"
+      },
+      {
+        "name": "button",
+        "type": "enum",
+        "label": "Button",
+        "options": [
+          "left",
+          "right"
+        ],
+        "default": "left",
+        "group": "Drag"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Input Mode",
+        "description": "input is usually best for games. message works in the background only when the target accepts posted mouse messages. cursor is a physical fallback.",
+        "options": [
+          "input",
+          "cursor",
+          "message"
+        ],
+        "default": "input",
+        "group": "Drag"
+      },
+      {
+        "name": "drag_duration_ms",
+        "type": "int",
+        "label": "Drag Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 300,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "drag_steps",
+        "aliases": [
+          "steps"
+        ],
+        "type": "int",
+        "label": "Drag Steps",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "default": 12,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Activation Wait (ms)",
+        "description": "Wait after bringing an unfocused game to the foreground before pressing the mouse button.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after releasing the button before restoring your previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_key",
+    "label": "Win Key",
+    "description": "Press keys in window",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "keys",
+        "aliases": [
+          "key"
+        ],
+        "type": "key_list",
+        "label": "Keys"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Key Sequence",
+        "options": [
+          "simultaneous",
+          "sequential"
+        ],
+        "default": "simultaneous"
+      },
+      {
+        "name": "delivery_mode",
+        "type": "enum",
+        "label": "Delivery *",
+        "description": "Background methods do not bring the app forward, but support varies by app. Text sends characters; Key sends key-down/up; Combined sends both; Activated also simulates logical activation and is experimental. Focused physical input brings the app forward and is the most compatible.",
+        "options": [
+          "background_text",
+          "background_key",
+          "background_combined",
+          "background_activated",
+          "input"
+        ],
+        "option_labels": {
+          "background_text": "Background text",
+          "background_key": "Background key",
+          "background_combined": "Background combined",
+          "background_activated": "Background activated (experimental)",
+          "input": "Focused physical input"
+        },
+        "value_aliases": {
+          "message": "background_key"
+        },
+        "default": "background_key"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Focus Wait (ms)",
+        "description": "Wait after bringing the selected app to the foreground before sending physical keys.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after physical keys are released before restoring the previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_type",
+    "label": "Win Type",
+    "description": "Type text in window",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "text",
+        "type": "string",
+        "label": "Text"
+      },
+      {
+        "name": "min_delay",
+        "type": "int",
+        "label": "Min Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "max_delay",
+        "type": "int",
+        "label": "Max Delay (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "delay_ms",
+        "type": "int",
+        "label": "Fixed Delay (ms)",
+        "description": "Legacy fixed character delay used when minimum and maximum are both zero.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "delivery_mode",
+        "type": "enum",
+        "label": "Delivery *",
+        "description": "Background methods do not bring the app forward, but support varies by app. Text sends characters; Key sends key-down/up; Combined sends both; Activated also simulates logical activation and is experimental. Focused physical input brings the app forward and is the most compatible.",
+        "options": [
+          "background_text",
+          "background_key",
+          "background_combined",
+          "background_activated",
+          "input"
+        ],
+        "option_labels": {
+          "background_text": "Background text",
+          "background_key": "Background key",
+          "background_combined": "Background combined",
+          "background_activated": "Background activated (experimental)",
+          "input": "Focused physical input"
+        },
+        "value_aliases": {
+          "message": "background_text"
+        },
+        "default": "background_text"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Focus Wait (ms)",
+        "description": "Wait after bringing the selected app to the foreground before typing physical input.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after physical text input before restoring the previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_scroll",
+    "label": "Win Scroll",
+    "description": "Scroll in window using pixels or percent",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "coordinate_unit",
+        "type": "enum",
+        "label": "Coordinate Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels"
+      },
+      {
+        "name": "x",
+        "type": "int",
+        "label": "X",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"]
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "label": "Y",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"]
+      },
+      {
+        "name": "amount",
+        "type": "int",
+        "label": "Amount",
+        "supportsValueReference": true,
+        "allowed_value_types": ["integer"]
+      },
+      {
+        "name": "delivery_mode",
+        "type": "enum",
+        "label": "Delivery",
+        "description": "message scrolls the selected app without moving the cursor or changing focus. input briefly focuses the app and uses physical wheel input for compatibility.",
+        "options": [
+          "message",
+          "input"
+        ],
+        "option_labels": {
+          "message": "Background message",
+          "input": "Focused physical input"
+        },
+        "default": "message"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Focus Wait (ms)",
+        "description": "Wait after bringing the selected app to the foreground before physical scrolling.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after physical scrolling before restoring the previous foreground window and cursor.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_focus",
+    "label": "Win Focus",
+    "description": "Bring window to front",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_click_image",
+    "label": "Win Click Image",
+    "description": "Find and click image in window with optional pixel or percent offset",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Click Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "group": "Click"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Activation Wait (ms)",
+        "description": "Wait after bringing an unfocused game to the foreground before pressing the mouse button.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true,
+        "group": "Click"
+      },
+      {
+        "name": "click_duration_ms",
+        "type": "int",
+        "label": "Click Duration (ms)",
+        "description": "How long physical modes keep the mouse button down so games polling each frame can detect it.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 50,
+        "optional": true,
+        "group": "Click"
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after releasing the button before restoring your previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true,
+        "group": "Click"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "button",
+        "type": "enum",
+        "label": "Button",
+        "options": [
+          "left",
+          "right",
+          "middle"
+        ],
+        "default": "left",
+        "group": "Click"
+      },
+      {
+        "name": "click",
+        "type": "enum",
+        "label": "Click Type",
+        "options": [
+          "single",
+          "double"
+        ],
+        "default": "single",
+        "group": "Click"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Input Mode",
+        "description": "message works in the background without moving your mouse. cursor and input are physical compatibility fallbacks that briefly focus the target, then restore your previous window and cursor.",
+        "options": [
+          "message",
+          "cursor",
+          "input"
+        ],
+        "default": "message",
+        "group": "Click"
+      },
+      {
+        "name": "xmargin",
+        "aliases": [
+          "margin_x"
+        ],
+        "type": "int",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click"
+      },
+      {
+        "name": "ymargin",
+        "aliases": [
+          "margin_y"
+        ],
+        "type": "int",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_drag_image",
+    "label": "Win Drag Image",
+    "description": "Find an image in a window, press it, and drag by a pixel or percent offset",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "start_offset_unit",
+        "type": "enum",
+        "label": "Start Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "group": "Start"
+      },
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Drag Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "group": "Drag"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "xmargin",
+        "aliases": [
+          "margin_x",
+          "start_xoffset",
+          "start_offset_x"
+        ],
+        "type": "int",
+        "label": "Start Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Start"
+      },
+      {
+        "name": "ymargin",
+        "aliases": [
+          "margin_y",
+          "start_yoffset",
+          "start_offset_y"
+        ],
+        "type": "int",
+        "label": "Start Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Start"
+      },
+      {
+        "name": "xoffset",
+        "aliases": [
+          "offset_x",
+          "drag_x",
+          "drag_offset_x"
+        ],
+        "type": "int",
+        "label": "Drag Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Drag"
+      },
+      {
+        "name": "yoffset",
+        "aliases": [
+          "offset_y",
+          "drag_y",
+          "drag_offset_y"
+        ],
+        "type": "int",
+        "label": "Drag Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Drag"
+      },
+      {
+        "name": "button",
+        "type": "enum",
+        "label": "Button",
+        "options": [
+          "left",
+          "right"
+        ],
+        "default": "left",
+        "group": "Drag"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Input Mode",
+        "description": "input is usually best for games. message works in the background only when the target accepts posted mouse messages. cursor is a physical fallback.",
+        "options": [
+          "input",
+          "cursor",
+          "message"
+        ],
+        "default": "input",
+        "group": "Drag"
+      },
+      {
+        "name": "drag_duration_ms",
+        "type": "int",
+        "label": "Drag Duration (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 300,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "drag_steps",
+        "aliases": [
+          "steps"
+        ],
+        "type": "int",
+        "label": "Drag Steps",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "default": 12,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Activation Wait (ms)",
+        "description": "Wait after bringing an unfocused game to the foreground before pressing the mouse button.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after releasing the button before restoring your previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true,
+        "group": "Drag"
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_if_image",
+    "label": "Win If Image",
+    "description": "Branch on image in window with optional pixel or percent offset",
+    "category": "WINDOWS",
+    "canHaveChildren": true,
+    "canHaveElse": true,
+    "childBuiltins": ["_match_x", "_match_y"],
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Click Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "condition",
+        "type": "enum",
+        "label": "Condition",
+        "options": [
+          "found",
+          "not_found"
+        ],
+        "default": "found"
+      },
+      {
+        "name": "click_if_found",
+        "aliases": [
+          "clickIfFound"
+        ],
+        "type": "bool",
+        "label": "Click If Found",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "default": false,
+        "group": "Click If Found"
+      },
+      {
+        "name": "button",
+        "type": "enum",
+        "label": "Mouse Button",
+        "options": [
+          "left",
+          "right"
+        ],
+        "default": "left",
+        "group": "Click If Found"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Input Mode",
+        "description": "message works in the background without moving your mouse. cursor and input are physical compatibility fallbacks that briefly focus the target, then restore your previous window and cursor.",
+        "options": [
+          "message",
+          "cursor",
+          "input"
+        ],
+        "default": "message",
+        "group": "Click If Found"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Activation Wait (ms)",
+        "description": "Wait after bringing an unfocused game to the foreground before pressing the mouse button.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "click_duration_ms",
+        "type": "int",
+        "label": "Click Duration (ms)",
+        "description": "How long physical modes keep the mouse button down so games polling each frame can detect it.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 50,
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after releasing the button before restoring your previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "xmargin",
+        "aliases": [
+          "margin_x"
+        ],
+        "type": "int",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click If Found"
+      },
+      {
+        "name": "ymargin",
+        "aliases": [
+          "margin_y"
+        ],
+        "type": "int",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click If Found"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "win_while",
+    "label": "Win While",
+    "description": "Loop while image in window with optional pixel or percent offset",
+    "category": "WINDOWS",
+    "canHaveChildren": true,
+    "canHaveElse": false,
+    "childBuiltins": ["_match_x", "_match_y"],
+    "hookPoints": [{"type": "visual_image", "evidence": "screenshot", "phases": ["before", "after"]}],
+    "params": [
+      {
+        "name": "offset_unit",
+        "type": "enum",
+        "label": "Click Offset Unit",
+        "options": [
+          "pixels",
+          "percent"
+        ],
+        "default": "pixels",
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "images",
+        "type": "image_list",
+        "label": "Images"
+      },
+      {
+        "name": "threshold",
+        "type": "double",
+        "label": "Threshold",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.9
+      },
+      {
+        "name": "condition",
+        "type": "enum",
+        "label": "Condition",
+        "options": [
+          "found",
+          "not_found"
+        ],
+        "default": "found"
+      },
+      {
+        "name": "click_if_found",
+        "aliases": [
+          "clickIfFound"
+        ],
+        "type": "bool",
+        "label": "Click If Found",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "default": false,
+        "group": "Click If Found"
+      },
+      {
+        "name": "button",
+        "type": "enum",
+        "label": "Mouse Button",
+        "options": [
+          "left",
+          "right"
+        ],
+        "default": "left",
+        "group": "Click If Found"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "label": "Input Mode",
+        "description": "message works in the background without moving your mouse. cursor and input are physical compatibility fallbacks that briefly focus the target, then restore your previous window and cursor.",
+        "options": [
+          "message",
+          "cursor",
+          "input"
+        ],
+        "default": "message",
+        "group": "Click If Found"
+      },
+      {
+        "name": "focus_delay_ms",
+        "type": "int",
+        "label": "Activation Wait (ms)",
+        "description": "Wait after bringing an unfocused game to the foreground before pressing the mouse button.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 200,
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "click_duration_ms",
+        "type": "int",
+        "label": "Click Duration (ms)",
+        "description": "How long physical modes keep the mouse button down so games polling each frame can detect it.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 50,
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "restore_delay_ms",
+        "type": "int",
+        "label": "Restore Wait (ms)",
+        "description": "Wait after releasing the button before restoring your previous foreground window.",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 100,
+        "optional": true,
+        "group": "Click If Found"
+      },
+      {
+        "name": "xmargin",
+        "aliases": [
+          "margin_x"
+        ],
+        "type": "int",
+        "label": "Offset X",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click If Found"
+      },
+      {
+        "name": "ymargin",
+        "aliases": [
+          "margin_y"
+        ],
+        "type": "int",
+        "label": "Offset Y",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "integer"
+        ],
+        "optional": true,
+        "min": -999999,
+        "group": "Click If Found"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "label": "Timeout (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 30000,
+        "optional": true
+      },
+      {
+        "name": "interval_ms",
+        "type": "int",
+        "label": "Interval (ms)",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "duration_ms"
+        ],
+        "default": 1000,
+        "optional": true
+      },
+      {
+        "name": "pause_ms",
+        "type": "int",
+        "label": "Pause Before (ms)",
+        "optional": true
+      },
+      {
+        "name": "color_match",
+        "type": "bool",
+        "label": "Color Match",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "boolean"
+        ],
+        "optional": true
+      },
+      {
+        "name": "color_tolerance",
+        "type": "double",
+        "label": "Color Tolerance",
+        "supportsValueReference": true,
+        "allowed_value_types": [
+          "number"
+        ],
+        "default": 0.3,
+        "optional": true
+      },
+      {
+        "name": "min_wait_time",
+        "type": "int",
+        "label": "Min Wait (ms)",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "id": "hibernate_computer",
+    "label": "Hibernate Computer",
+    "description": "Hibernate the local Windows computer and end the current flow",
+    "category": "WINDOWS",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": []
+  },
+  {
+    "id": "check_hooks",
+    "label": "Check Hooks",
+    "description": "Evaluate an ordered list of flow hooks using fresh evidence",
+    "category": "CONTROL_FLOW",
+    "canHaveChildren": false,
+    "canHaveElse": false,
+    "params": [
+      {
+        "name": "hooks",
+        "type": "hook_list",
+        "label": "Hooks"
+      }
+    ]
+  }
+]

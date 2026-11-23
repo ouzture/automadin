@@ -1,0 +1,105 @@
+{
+  "components": [
+    {
+      "id": "automadin",
+      "license_expression": "GPL-3.0-only",
+      "patterns": ["Automadin.exe"],
+      "version_source": "application"
+    },
+    {
+      "id": "cpython",
+      "license_expression": "PSF-2.0",
+      "patterns": ["_asyncio.pyd", "_bz2.pyd", "_ctypes.pyd", "_decimal.pyd", "_elementtree.pyd", "_hashlib.pyd", "_lzma.pyd", "_multiprocessing.pyd", "_overlapped.pyd", "_queue.pyd", "_socket.pyd", "_sqlite3.pyd", "_ssl.pyd", "_uuid.pyd", "_zoneinfo.pyd", "pyexpat.pyd", "python3.dll", "python311.dll", "select.pyd", "unicodedata.pyd"],
+      "version_source": "python"
+    },
+    {
+      "id": "openssl-cpython",
+      "license_expression": "OpenSSL",
+      "patterns": ["libcrypto*.dll", "libssl*.dll"],
+      "version_source": "python"
+    },
+    {
+      "id": "libffi-cpython",
+      "license_expression": "MIT",
+      "patterns": ["libffi*.dll"],
+      "version_source": "python"
+    },
+    {
+      "id": "sqlite-cpython",
+      "license_expression": "blessing",
+      "patterns": ["sqlite3.dll"],
+      "version_source": "python"
+    },
+    {
+      "id": "microsoft-visual-cpp-runtime",
+      "license_expression": "LicenseRef-Microsoft-Visual-Cpp-Redistributable",
+      "patterns": ["mfc*.dll", "msvcp*.dll", "shiboken6/msvcp*.dll", "vcruntime*.dll"],
+      "version_source": "file-hash"
+    },
+    {
+      "id": "pyside6-qt",
+      "license_expression": "GPL-3.0-only",
+      "package": "PySide6",
+      "patterns": ["pyside6.abi3.dll", "PySide6/*.dll", "PySide6/*.pyd", "qt6*.dll"],
+      "version_source": "package"
+    },
+    {
+      "id": "shiboken6",
+      "license_expression": "GPL-3.0-only",
+      "package": "shiboken6",
+      "patterns": ["shiboken6.abi3.dll", "shiboken6/*.pyd"],
+      "version_source": "package"
+    },
+    {
+      "id": "playwright-node",
+      "license_expression": "MIT",
+      "package": "playwright",
+      "patterns": ["playwright/driver/node.exe"],
+      "version_source": "package"
+    },
+    {
+      "id": "opencv-python",
+      "license_expression": "Apache-2.0",
+      "package": "opencv-python",
+      "patterns": ["cv2/*.dll", "cv2/*.pyd"],
+      "version_source": "package"
+    },
+    {
+      "id": "numpy",
+      "license_expression": "BSD-3-Clause",
+      "package": "numpy",
+      "patterns": ["numpy.libs/*.dll", "numpy/*.pyd"],
+      "version_source": "package"
+    },
+    {
+      "id": "pillow",
+      "license_expression": "MIT-CMU",
+      "package": "Pillow",
+      "patterns": ["PIL/*.pyd"],
+      "version_source": "package"
+    },
+    {
+      "id": "greenlet",
+      "license_expression": "MIT AND PSF-2.0",
+      "package": "greenlet",
+      "patterns": ["greenlet/*.pyd"],
+      "version_source": "package"
+    },
+    {
+      "id": "pywin32",
+      "license_expression": "PSF-2.0",
+      "package": "pywin32",
+      "patterns": ["_win32sysloader.pyd", "pythoncom*.dll", "pywintypes*.dll", "win32api.pyd", "win32cred.pyd", "win32event.pyd", "win32evtlog.pyd", "win32gui.pyd", "win32job.pyd", "win32process.pyd", "win32ui.pyd"],
+      "version_source": "package"
+    },
+    {
+      "id": "windows-cap",
+      "license_expression": "MIT",
+      "package": "windows-cap",
+      "patterns": ["windows_cap/*.pyd"],
+      "version_source": "package"
+    }
+  ],
+  "fulfilled_blocker": "native-and-installer-sbom-incomplete",
+  "schema_version": 1
+}

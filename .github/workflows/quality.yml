@@ -1,0 +1,141 @@
+name: Quality
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install project and quality tools
+        run: python -m pip install -e ".[dev]"
+      - name: Compile
+        run: python -m compileall -q automadin tests main.py
+      - name: Test
+        run: python -m pytest -q
+      - name: Lint
+        run: python -m ruff check .
+      - name: Build documentation
+        run: |
+          python -m pip install -e ".[docs]"
+          python tools/generate_command_reference.py --check
+          python -m mkdocs build --strict
+      - name: Build wheel
+        run: |
+          python -m pip install build
+          python -m build
+      - name: Verify wheel contents
+        shell: pwsh
+        run: |
+          $wheel = Get-ChildItem dist/*.whl | Select-Object -First 1
+          python -m zipfile -l $wheel.FullName | Tee-Object wheel-contents.txt
+          Select-String wheel-contents.txt 'automadin/resources/icon.ico'
+
+  windows-release:
+    name: Windows frozen release gate
+    if: github.event_name == 'workflow_dispatch'
+    needs: test
+    runs-on: windows-2025
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11.4"
+          architecture: x64
+          cache: pip
+          cache-dependency-path: requirements-release-windows.txt
+      - name: Install exact Windows release environment
+        run: python -m pip install -r requirements-release-windows.txt
+      - name: Build and verify frozen release
+        shell: pwsh
+        run: |
+          $python = python -c "import sys; print(sys.executable)"
+          pwsh -File tools/build_windows.ps1 -Python $python -RequireInstaller
+      - name: Smoke isolated installer lifecycle
+        shell: pwsh
+        run: |
+          $command = Get-Command ISCC.exe -ErrorAction SilentlyContinue
+          $compiler = if ($command) { $command.Source } else { $null }
+          if (-not $compiler) {
+            $candidates = @(
+              "${env:ProgramFiles(x86)}\Inno Setup 7\ISCC.exe",
+              "$env:ProgramFiles\Inno Setup 7\ISCC.exe",
+              "$env:LOCALAPPDATA\Programs\Inno Setup 7\ISCC.exe",
+              "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+              "$env:ProgramFiles\Inno Setup 6\ISCC.exe",
+              "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe"
+            )
+            $compiler = $candidates |
+              Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+              Select-Object -First 1
+          }
+          if (-not $compiler) {
+            throw "The release build succeeded without a discoverable Inno compiler."
+          }
+          $scratch = Join-Path $env:RUNNER_TEMP "automadin-installer-smoke"
+          New-Item -ItemType Directory -Force -Path $scratch | Out-Null
+          try {
+            python tools/smoke_windows_installer.py `
+              $compiler `
+              packaging/Automadin.iss `
+              $scratch `
+              --timeout 60
+          } finally {
+            if (Test-Path -LiteralPath $scratch) {
+              Remove-Item -LiteralPath $scratch -Recurse -Force
+            }
+          }
+      - name: Smoke exact production installer artifact
+        shell: pwsh
+        run: |
+          $version = python tools/project_metadata.py --version
+          $scratch = Join-Path $env:RUNNER_TEMP "automadin-production-installer-smoke"
+          New-Item -ItemType Directory -Force -Path $scratch | Out-Null
+          try {
+            python tools/smoke_windows_installer.py `
+              --built-production-installer "dist/installer/Automadin-Setup-$version.exe" `
+              --built-production-scratch $scratch `
+              --timeout 60
+          } finally {
+            if (Test-Path -LiteralPath $scratch) {
+              Remove-Item -LiteralPath $scratch -Recurse -Force
+            }
+          }
+      - name: Smoke standalone and portable artifacts
+        shell: pwsh
+        run: |
+          $version = python tools/project_metadata.py --version
+          $scratch = Join-Path $env:RUNNER_TEMP "automadin-release-smoke"
+          New-Item -ItemType Directory -Force -Path $scratch | Out-Null
+          try {
+            python tools/smoke_windows_release.py `
+              dist/Automadin.dist `
+              "dist/Automadin-Portable-$version.zip" `
+              $scratch `
+              --timeout 30
+          } finally {
+            if (Test-Path -LiteralPath $scratch) {
+              Remove-Item -LiteralPath $scratch -Recurse -Force
+            }
+          }
+      - name: Record ephemeral artifact hashes
+        shell: pwsh
+        run: |
+          $version = python tools/project_metadata.py --version
+          Get-FileHash -Algorithm SHA256 `
+            dist/Automadin.dist/Automadin.exe, `
+            "dist/Automadin-Portable-$version.zip", `
+            "dist/installer/Automadin-Setup-$version.exe"

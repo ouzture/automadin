@@ -1,0 +1,26 @@
+{
+  "archives": [
+    {
+      "filename": "pyside-setup-everywhere-src-6.10.2.tar.xz",
+      "id": "qt-for-python",
+      "license_expression": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "package": "PySide6",
+      "sha256": "05eec38bb71bffff8860786e3c0766cc4b86affc72439bd246c54889bdcb7400",
+      "size": 17877708,
+      "url": "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.10.2-src/pyside-setup-everywhere-src-6.10.2.tar.xz",
+      "version": "6.10.2"
+    },
+    {
+      "filename": "qt-everywhere-src-6.10.2.tar.xz",
+      "id": "qt",
+      "license_expression": "GPL-3.0-only",
+      "package": "PySide6",
+      "sha256": "c3df0f0e421130cc52ed81cb712358804471ce9bd2a41d97828f9f5b1bf7fed2",
+      "size": 1315359412,
+      "url": "https://download.qt.io/official_releases/qt/6.10/6.10.2/single/qt-everywhere-src-6.10.2.tar.xz",
+      "version": "6.10.2"
+    }
+  ],
+  "fulfilled_blocker": "qt-gpl-source-distribution-incomplete",
+  "schema_version": 1
+}

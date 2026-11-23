@@ -1,0 +1,20 @@
+# Exact Windows x64 release environment for Automadin Windows builds.
+# Install with:
+#   py -3.11 -m pip install -r requirements-release-windows.txt
+Nuitka==2.7.11
+ordered-set==4.1.0
+zstandard==0.25.0
+PySide6==6.10.2
+PySide6-Addons==6.10.2
+PySide6-Essentials==6.10.2
+shiboken6==6.10.2
+playwright==1.58.0
+pyee==13.0.1
+greenlet==3.3.2
+typing-extensions==4.15.0
+opencv-python==4.13.0.92
+numpy==2.4.3
+Pillow==12.1.1
+tzdata==2026.3
+pywin32==311
+windows-cap==0.1.2

@@ -1,0 +1,56 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "automadin/resources/command_types.json"
+      - "docs/**"
+      - "mkdocs.yml"
+      - "tools/generate_command_reference.py"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || github.event.repository.private == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install documentation tools
+        run: python -m pip install -e ".[docs]"
+      - name: Verify generated reference
+        run: python tools/generate_command_reference.py --check
+      - name: Build site
+        run: python -m mkdocs build --strict
+      - if: github.event.repository.private == false
+        uses: actions/configure-pages@v5
+      - if: github.event.repository.private == false
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    if: github.event.repository.private == false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

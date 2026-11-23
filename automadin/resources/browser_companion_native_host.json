@@ -1,0 +1,9 @@
+{
+  "name": "com.automadin.browser_companion",
+  "description": "Automadin browser companion native messaging bridge",
+  "path": "Automadin.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://mngmmchlajnjfakibmioediekahneckp/"
+  ]
+}

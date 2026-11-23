@@ -1,0 +1,109 @@
+{
+  "application": {
+    "license_expression": "GPL-3.0-only",
+    "license_file": "LICENSE"
+  },
+  "packages": {
+    "greenlet": {
+      "evidence_required": true,
+      "license_expression": "MIT AND PSF-2.0",
+      "scope": "runtime"
+    },
+    "nuitka": {
+      "evidence_required": true,
+      "license_expression": "Apache-2.0",
+      "scope": "build"
+    },
+    "numpy": {
+      "evidence_required": true,
+      "license_expression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "scope": "runtime"
+    },
+    "opencv-python": {
+      "evidence_required": true,
+      "license_expression": "Apache-2.0",
+      "scope": "runtime"
+    },
+    "ordered-set": {
+      "evidence_note": "The 4.1.0 wheel declares MIT through its license classifier but contains no license or notice file.",
+      "evidence_required": false,
+      "license_expression": "MIT",
+      "scope": "build"
+    },
+    "pillow": {
+      "evidence_required": true,
+      "license_expression": "MIT-CMU",
+      "scope": "runtime"
+    },
+    "playwright": {
+      "evidence_required": true,
+      "license_expression": "Apache-2.0",
+      "scope": "runtime"
+    },
+    "pyee": {
+      "evidence_required": true,
+      "license_expression": "MIT",
+      "scope": "runtime"
+    },
+    "pyside6": {
+      "evidence_note": "Automadin selects Qt/PySide's GPL-3.0-only route. The wheel's only declared License-File is LicenseRef-Qt-Commercial.txt, so exact bundled-version Corresponding Source delivery remains a publication requirement.",
+      "evidence_required": true,
+      "license_expression": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "runtime"
+    },
+    "pyside6-addons": {
+      "evidence_note": "Automadin selects Qt/PySide's GPL-3.0-only route. The wheel's only declared License-File is LicenseRef-Qt-Commercial.txt, so exact bundled-version Corresponding Source delivery remains a publication requirement.",
+      "evidence_required": true,
+      "license_expression": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "runtime"
+    },
+    "pyside6-essentials": {
+      "evidence_note": "Automadin selects Qt/PySide's GPL-3.0-only route. The wheel's only declared License-File is LicenseRef-Qt-Commercial.txt, so exact bundled-version Corresponding Source delivery remains a publication requirement.",
+      "evidence_required": true,
+      "license_expression": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "runtime"
+    },
+    "pywin32": {
+      "evidence_required": true,
+      "license_expression": "PSF-2.0",
+      "scope": "runtime"
+    },
+    "shiboken6": {
+      "evidence_note": "Automadin selects Qt/PySide's GPL-3.0-only route. The wheel's only declared License-File is LicenseRef-Qt-Commercial.txt, so exact bundled-version Corresponding Source delivery remains a publication requirement.",
+      "evidence_required": true,
+      "license_expression": "LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+      "scope": "runtime"
+    },
+    "typing-extensions": {
+      "evidence_required": true,
+      "license_expression": "PSF-2.0",
+      "scope": "runtime"
+    },
+    "tzdata": {
+      "evidence_required": true,
+      "license_expression": "Apache-2.0",
+      "scope": "runtime"
+    },
+    "windows-cap": {
+      "evidence_required": true,
+      "license_expression": "MIT",
+      "scope": "runtime"
+    },
+    "zstandard": {
+      "evidence_required": true,
+      "license_expression": "BSD-3-Clause",
+      "scope": "build"
+    }
+  },
+  "publication_blockers": [
+    {
+      "code": "qt-gpl-source-distribution-incomplete",
+      "message": "Automadin selects the GPL-3.0-only Qt/PySide route. Generate and publish the verified corresponding-source set beside every binary release; upstream links alone are not fulfillment."
+    },
+    {
+      "code": "native-and-installer-sbom-incomplete",
+      "message": "Generate the exact native payload inventory and Inno Setup compiler/license evidence. Every shipped EXE, DLL, and PYD must be classified exactly once and hash-verified."
+    }
+  ],
+  "schema_version": 1
+}

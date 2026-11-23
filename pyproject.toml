@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=77.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "automadin"
+version = "0.3.0"
+description = "Desktop automation tool with visual flow editor"
+readme = "README.md"
+license = "GPL-3.0-only"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.11"
+dependencies = [
+    "PySide6>=6.7.0",
+    "playwright>=1.40.0",
+    "opencv-python>=4.9.0",
+    "numpy>=1.26.0",
+    "Pillow>=10.3.0",
+    "tzdata>=2026.3",
+    "pywin32>=306; sys_platform == 'win32'",
+    "windows-cap==0.1.2; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.9",
+]
+docs = [
+    "mkdocs>=1.6,<2",
+]
+
+[project.scripts]
+automadin = "automadin.app:main"
+
+[tool.setuptools.packages.find]
+include = ["automadin*"]
+
+[tool.setuptools.package-data]
+automadin = [
+    "resources/*.json",
+    "resources/*.png",
+    "resources/*.ico",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "unit: isolated logic or component contract tests",
+    "ui: Qt widget and desktop interaction tests",
+    "integration: tests spanning multiple application services",
+    "windows: Windows-specific behavior or packaging tests",
+    "release: release metadata, packaging, and installer compliance tests",
+    "slow: intentionally broader or longer-running tests",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_visual_detection.py" = ["E402"]

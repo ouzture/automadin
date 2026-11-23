@@ -1,0 +1,50 @@
+site_name: Automadin
+site_description: Build and run visual desktop automation flows on Windows.
+site_url: https://ouzture.github.io/automadin/
+repo_url: https://github.com/ouzture/automadin
+repo_name: ouzture/automadin
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2026 ouzture · GPL-3.0-only
+
+theme:
+  name: readthedocs
+  language: en
+  logo: assets/automadin-mark.svg
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - User guide:
+      - Overview: user-guide/index.md
+      - Install and first setup: user-guide/installation.md
+      - Create your first flow: user-guide/first-flow.md
+      - Understand the workspace: user-guide/workspace.md
+      - Build flows: user-guide/building-flows.md
+      - Values and control flow: user-guide/values-and-control-flow.md
+      - Images and screen text: user-guide/images-and-screen-text.md
+      - Targets:
+          - Browser: user-guide/targets/browser.md
+          - Android: user-guide/targets/android.md
+          - Windows applications: user-guide/targets/windows.md
+      - Run and debug: user-guide/running-and-debugging.md
+      - Run setups and schedules: user-guide/run-setups-and-schedules.md
+      - Library and backups: user-guide/library-and-backups.md
+      - Troubleshooting: user-guide/troubleshooting.md
+      - Privacy and safe sharing: user-guide/privacy-and-safety.md
+      - Command reference: user-guide/reference/commands.md
+  - Developer documentation:
+      - Overview: project-overview.md
+      - Database schema: database-schema.md
+      - Windows distribution: distribution.md
+  - Contributing: https://github.com/ouzture/automadin/blob/main/CONTRIBUTING.md
+  - Security: https://github.com/ouzture/automadin/blob/main/SECURITY.md

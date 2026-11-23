@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Automadin Browser Companion",
+  "version": "0.2.92",
+  "description": "Connect an explicitly granted browser tab to Automadin.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqPeXp3q/BTTDQ17oMR2YJmuJ6tAwRExlI9VHW6REzu8UAEVmq2I5WAenDtCyEcgCy3zjX2gn3VBvF0AmJNB00SjOPI+FcRFeTJIYfdRcPMjaScxqD200o75G+t+Y9Lpfv+Fm5x70k5KpNHHBNG3n+rg0NcHBmcZYknw05tSyUnxcidfjxvDqHHw08ckJbdUg9AF62oUxPGKdeTv8TWs4w0fWABZd6Nv5wUFzEtyB+cvFaiG7QDBzZ/gNO8LUGqlxaXYBcALbxli5jvgD3opBzPp/AEuCONGdPlLVwsdnz0WegAhYD9WQzfPxklOryXU15j7YAl/nmu7xvo5wAoXV3QIDAQAB",
+  "permissions": ["activeTab", "nativeMessaging", "scripting", "storage", "tabs", "userScripts"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": {"service_worker": "service_worker.js"},
+  "action": {"default_title": "Connect this tab to Automadin"}
+}
