@@ -58,6 +58,13 @@ currently active runs together. Both screenshots use disposable synthetic data.
 2. Open **Setup center** and choose Browser, Android, or Windows automation.
 3. Follow [Create your first flow](https://ouzture.github.io/automadin/user-guide/first-flow/).
 
+> [!WARNING]
+> Automadin's current Windows binaries are unsigned while the project applies
+> for free open-source signing through SignPath Foundation. Windows may show
+> **Unknown publisher** or a SmartScreen warning. Verify the SHA-256 hashes on
+> the release page before running a download. See the
+> [code signing policy](CODE_SIGNING_POLICY.md).
+
 The [complete user guide](https://ouzture.github.io/automadin/) covers setup,
 flow building, all target types, images and OCR, debugging, schedules, backups,
 privacy, and every available command.

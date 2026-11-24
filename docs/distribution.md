@@ -226,9 +226,13 @@ archives. Later builds reuse them only after checking the pinned sizes and
 SHA-256 values. Do not publish an installer or portable ZIP without publishing
 the matching `dist/source/Automadin-<version>/` files alongside it.
 
-This flag is intentionally independent of `-RequireInstaller`. A future public
-release must use both gates and separately require verified code signatures;
-compliance readiness alone does not mean an artifact is publishable.
+This flag is intentionally independent of `-RequireInstaller`. Every public
+binary release must use both gates. Authenticode signing is preferred and must be
+verified when present. While signing is pending, an unsigned release is permitted
+only when its release page prominently identifies that status, warns about
+Windows publisher/SmartScreen prompts, and publishes SHA-256 hashes with the
+matching Corresponding Source. Compliance readiness alone does not establish
+publisher identity.
 
 The frozen executable must also pass
 `--release-browser-health-self-test <temporary-parent>`. This starts the packaged
@@ -367,13 +371,15 @@ Before publishing:
     release.
 
 There is not yet a single “publishable” build switch. Before publication, run the
-build with both `-RequireInstaller` and `-RequireComplianceReady`, then apply and
-verify the code-signing and clean-machine lifecycle gates documented below.
+build with both `-RequireInstaller` and `-RequireComplianceReady`, complete the
+clean-machine lifecycle checks, and either verify Authenticode signatures or
+apply the explicit unsigned-release controls documented above.
 
 ## Remaining publication risks
 
-- `Automadin.exe` and the installer are not code-signed; Windows publisher trust
-  and tamper verification remain unresolved.
+- `Automadin.exe` and the installer are not yet code-signed; Windows publisher
+  trust remains unresolved. The project is preparing an application to the
+  SignPath Foundation open-source signing program.
 - Synthetic installer install/upgrade/downgrade/uninstall behavior and an
   empty-runner lifecycle for the exact production installer are automated.
   Interactive first-run, runtime, portability, and clean disposable-VM checks
