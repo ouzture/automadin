@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "automadin"
-version = "0.3.0"
+version = "0.3.1"
 description = "Desktop automation tool with visual flow editor"
 readme = "README.md"
 license = "GPL-3.0-only"
@@ -15,7 +15,7 @@ dependencies = [
     "playwright>=1.40.0",
     "opencv-python>=4.9.0",
     "numpy>=1.26.0",
-    "Pillow>=10.3.0",
+    "Pillow>=13.0.0",
     "tzdata>=2026.3",
     "pywin32>=306; sys_platform == 'win32'",
     "windows-cap==0.1.2; sys_platform == 'win32'",

@@ -19,6 +19,13 @@ Download `Automadin-Setup-<version>.exe` from the project release and run it. Th
 installed application stores writable data under `%LOCALAPPDATA%\Automadin`. The
 uninstaller deliberately leaves that data in place.
 
+Current Windows release artifacts are unsigned while Automadin applies for
+open-source code signing. Windows may display **Unknown publisher** or a
+Microsoft Defender SmartScreen warning. Confirm that the filename and SHA-256
+hash match the values on the GitHub release page before running the installer or
+portable executable. A matching hash verifies the published bytes but does not
+provide the publisher identity guarantee of a trusted Authenticode signature.
+
 The portable ZIP keeps its data in a `data` directory beside `Automadin.exe`.
 Extract the complete ZIP before starting it; do not run the executable from
 inside the archive.
