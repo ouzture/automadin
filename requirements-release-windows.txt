@@ -14,7 +14,7 @@ greenlet==3.3.2
 typing-extensions==4.15.0
 opencv-python==4.13.0.92
 numpy==2.4.3
-Pillow==12.1.1
+Pillow==13.0.0
 tzdata==2026.3
 pywin32==311
 windows-cap==0.1.2
